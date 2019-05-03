@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SQLite;
 
 namespace Wpf.Masterclass.MyNotesApp.Model
@@ -10,7 +6,9 @@ namespace Wpf.Masterclass.MyNotesApp.Model
     public class Note : BasicNotesModel
     {
         private int _notebookId;
-
+        /// <summary>
+        /// Notebook Id
+        /// </summary>
         [Indexed]
         public int NotebookId
         {
@@ -23,7 +21,9 @@ namespace Wpf.Masterclass.MyNotesApp.Model
         }
 
         private string _title;
-
+        /// <summary>
+        /// Title of the Note
+        /// </summary>
         public string Title
         {
             get => _title;
@@ -35,7 +35,9 @@ namespace Wpf.Masterclass.MyNotesApp.Model
         }
 
         private DateTime _createdTime;
-
+        /// <summary>
+        /// Created time of Note
+        /// </summary>
         public DateTime CreatedTime
         {
             get => _createdTime;
@@ -47,7 +49,9 @@ namespace Wpf.Masterclass.MyNotesApp.Model
         }
 
         private DateTime _updatedTime;
-
+        /// <summary>
+        /// Last Update
+        /// </summary>
         public DateTime UpdatedTime
 
         {
@@ -60,7 +64,9 @@ namespace Wpf.Masterclass.MyNotesApp.Model
         }
 
         private string _fileLocation;
-
+        /// <summary>
+        /// File location string
+        /// </summary>
         public string FileLocation
         {
             get => _fileLocation;

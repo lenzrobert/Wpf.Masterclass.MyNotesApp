@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SQLite;
+﻿using SQLite;
 
 namespace Wpf.Masterclass.MyNotesApp.Model
 {
     public class Notebook : BasicNotesModel
     {
         private int _userId;
-
+        /// <summary>
+        /// User Id (Notebook owner)
+        /// </summary>
         [Indexed]
         public int UserId
         {
@@ -23,7 +20,9 @@ namespace Wpf.Masterclass.MyNotesApp.Model
         }
 
         private string _name;
-
+        /// <summary>
+        /// Notebook Name
+        /// </summary>
         public string Name
         {
             get => _name;
@@ -33,8 +32,5 @@ namespace Wpf.Masterclass.MyNotesApp.Model
                 OnPropertyChanged(nameof(Name));
             }
         }
-
-
-
     }
 }

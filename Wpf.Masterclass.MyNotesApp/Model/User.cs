@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security;
-using System.Text;
-using System.Threading.Tasks;
-using SQLite;
+﻿using SQLite;
 
 namespace Wpf.Masterclass.MyNotesApp.Model
 {
     public class User : BasicNotesModel
     {
+        /// <summary>
+        /// First Name of User
+        /// </summary>
         private string _name;
         [MaxLength(50)]
         public string Name
@@ -22,6 +19,9 @@ namespace Wpf.Masterclass.MyNotesApp.Model
             }
         }
 
+        /// <summary>
+        /// Last Name of User
+        /// </summary>
         private string _lastName;
         [MaxLength(50)]
         public string LastName
@@ -35,6 +35,9 @@ namespace Wpf.Masterclass.MyNotesApp.Model
         }
 
         private string _userName;
+        /// <summary>
+        /// Username (login)
+        /// </summary>
         public string UserName
         {
             get => _userName;
@@ -46,6 +49,9 @@ namespace Wpf.Masterclass.MyNotesApp.Model
         }
 
         private string _email;
+        /// <summary>
+        /// Email address string
+        /// </summary>
         public string Email
         {
             get => _email;
@@ -57,6 +63,9 @@ namespace Wpf.Masterclass.MyNotesApp.Model
         }
 
         private string _password;
+        /// <summary>
+        /// Password string
+        /// </summary>
         public string Password
         {
             get => _password;
