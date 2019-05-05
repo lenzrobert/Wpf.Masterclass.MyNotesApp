@@ -19,7 +19,7 @@ namespace Wpf.Masterclass.MyNotesApp.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-            throw new NotImplementedException();
+            //TODO: call create notebook function
         }
 
         public event EventHandler CanExecuteChanged;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
+using Wpf.Masterclass.MyNotesApp.Model;
 
 namespace Wpf.Masterclass.MyNotesApp.ViewModel.Commands
 {
@@ -14,12 +15,18 @@ namespace Wpf.Masterclass.MyNotesApp.ViewModel.Commands
         
         public bool CanExecute(object parameter)
         {
-            return true;
+            Notebook selectedNotebook = parameter as Notebook;
+            if (selectedNotebook != null)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public void Execute(object parameter)
         {
-            throw new NotImplementedException();
+           //TODO: call => NotesViewModel.CreateNote(selectedNotebook.Id);
         }
 
         public event EventHandler CanExecuteChanged;
