@@ -53,6 +53,7 @@ namespace Wpf.Masterclass.MyNotesApp.ViewModel
         {
            _exitApplicationCommand = new RelayCommand(ExitApplication, param => _canExecute);
             NewNoteCommand = new NewNoteCommand(this);
+            NewNotebookCommand = new NewNotebookCommand(this);
         }
 
         private void ExitApplication(object obj)
