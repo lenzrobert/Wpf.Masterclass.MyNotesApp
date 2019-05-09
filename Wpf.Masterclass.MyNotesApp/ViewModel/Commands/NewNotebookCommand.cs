@@ -7,6 +7,8 @@ namespace Wpf.Masterclass.MyNotesApp.ViewModel.Commands
     {
         public NotesViewModel NotesViewModel { get; set; }
 
+        public event EventHandler CanExecuteChanged;
+
         public NewNotebookCommand(NotesViewModel vm)
         {
             NotesViewModel = vm;
@@ -20,8 +22,9 @@ namespace Wpf.Masterclass.MyNotesApp.ViewModel.Commands
         public void Execute(object parameter)
         {
             //TODO: call create notebook function
+            NotesViewModel.CreateNotebook();
         }
 
-        public event EventHandler CanExecuteChanged;
+       
     }
 }

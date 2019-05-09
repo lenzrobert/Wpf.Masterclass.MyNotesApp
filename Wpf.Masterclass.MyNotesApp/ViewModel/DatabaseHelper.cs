@@ -7,7 +7,7 @@ namespace Wpf.Masterclass.MyNotesApp.ViewModel
     public static class DatabaseHelper
     {
         //location of SQLite database file
-        private static string dbFile = Path.Combine(Environment.CurrentDirectory, "MyNotesAppDb.db3");
+        public static string DbFile = Path.Combine(Environment.CurrentDirectory, "MyNotesAppDb.db3");
 
         /// <summary>
         /// Insert object to database
@@ -19,7 +19,7 @@ namespace Wpf.Masterclass.MyNotesApp.ViewModel
         {
             bool result = false;
 
-            using (SQLiteConnection conn = new SQLiteConnection(dbFile))
+            using (SQLiteConnection conn = new SQLiteConnection(DbFile))
             {
                 conn.CreateTable<T>();
                 int rows = conn.Insert(item);
@@ -42,7 +42,7 @@ namespace Wpf.Masterclass.MyNotesApp.ViewModel
         {
             bool result = false;
 
-            using (SQLiteConnection conn = new SQLiteConnection(dbFile))
+            using (SQLiteConnection conn = new SQLiteConnection(DbFile))
             {
                 conn.CreateTable<T>();
                 int rows = conn.Update(item);
@@ -65,7 +65,7 @@ namespace Wpf.Masterclass.MyNotesApp.ViewModel
         {
             bool result = false;
 
-            using (SQLiteConnection conn = new SQLiteConnection(dbFile))
+            using (SQLiteConnection conn = new SQLiteConnection(DbFile))
             {
                 conn.CreateTable<T>();
                 int rows = conn.Delete(item);
@@ -77,6 +77,5 @@ namespace Wpf.Masterclass.MyNotesApp.ViewModel
 
             return result;
         }
-
     }
 }

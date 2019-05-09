@@ -23,9 +23,48 @@
                           Command="{Binding ExitApplicationCommand}"/>
             </MenuItem>
         </Menu>
-    <Grid>
-        
-    </Grid>
-
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <TextBlock x:Name="StatusTextBlock" />
+            </StatusBarItem>
+        </StatusBar>
+        <ListView
+            Width="140"
+            DockPanel.Dock="Left"
+            SelectedItem="{Binding SelectedNotebook, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            ItemsSource="{Binding Notebooks}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <ListView
+            Width="140"
+            DockPanel.Dock="Left"
+            ItemsSource="{Binding Notes}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Title}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <ToolBarTray
+            DockPanel.Dock="Top">
+            <ToolBar>
+                <Button Content="Speech"
+                        x:Name="BtnSpeech"
+                        Click="BtnSpeech_Click" />
+                <Button x:Name ="BtnBold"
+                        Click="BtnBold_Click">
+                    <TextBlock Text ="B"
+                               FontWeight="Bold" />
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
+        <Grid>
+            <RichTextBox x:Name="RichTxtBxContent"
+                         TextChanged="RichTxtBxContent_TextChanged" />
+        </Grid>
     </DockPanel>
 </Window>

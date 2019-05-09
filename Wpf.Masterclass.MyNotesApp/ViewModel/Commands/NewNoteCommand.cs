@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows.Input;
 using Wpf.Masterclass.MyNotesApp.Model;
 
@@ -26,7 +27,9 @@ namespace Wpf.Masterclass.MyNotesApp.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-           //TODO: call => NotesViewModel.CreateNote(selectedNotebook.Id);
+            Notebook selectedNotebook = parameter as Notebook;
+            Debug.Assert(selectedNotebook != null, nameof(selectedNotebook) + " != null");
+            NotesViewModel?.CreateNote(selectedNotebook.Id);
         }
 
         public event EventHandler CanExecuteChanged;
