@@ -1,6 +1,9 @@
-﻿using System;
+﻿using System.Linq;
+using System.Speech.Recognition;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 
 namespace Wpf.Masterclass.MyNotesApp.View
@@ -10,20 +13,50 @@ namespace Wpf.Masterclass.MyNotesApp.View
     /// </summary>
     public partial class NotesWindow : Window
     {
+        private SpeechRecognitionEngine _speechRecognizer;
+        
         public NotesWindow()
         {
             InitializeComponent();
+            InitializeSpeechEngine();
+        }
+
+        private void InitializeSpeechEngine()
+        {
+            RecognizerInfo currentCluture = SpeechRecognitionEngine.InstalledRecognizers()
+                .FirstOrDefault(r => r.Culture.Equals(Thread.CurrentThread.CurrentCulture));
+            if (currentCluture != null)
+            {
+                _speechRecognizer = new SpeechRecognitionEngine(currentCluture);
+                GrammarBuilder grammarBuilder = new GrammarBuilder();
+                grammarBuilder.AppendDictation();
+                Grammar grammar = new Grammar(grammarBuilder);
+                
+                _speechRecognizer.LoadGrammar(grammar);
+                _speechRecognizer.SetInputToDefaultAudioDevice();
+                _speechRecognizer.SpeechRecognized += Recognizer_SpeechRecognized;
+            }
+        }
+
+        private void Recognizer_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
+        {
+            string recongnizedText = e.Result.Text;
+            RichTxtBxContent.Document.Blocks.Add(new Paragraph(new Run(recongnizedText)));
         }
 
         private void BtnSpeech_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            bool isButtonEnabled = ((ToggleButton) sender).IsChecked ?? false;
+            if (isButtonEnabled)
+            {
+                _speechRecognizer.RecognizeAsync(RecognizeMode.Multiple);
+            }
+            else
+            {
+                _speechRecognizer.RecognizeAsyncStop();
+            }
         }
-
-        private void BtnBold_Click(object sender, RoutedEventArgs e)
-        {
-            RichTxtBxContent.Selection.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Bold);
-        }
+     
 
         private void RichTxtBxContent_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -34,5 +67,64 @@ namespace Wpf.Masterclass.MyNotesApp.View
                 .Text.Length;
             StatusTextBlock.Text = $"Document length: {charactersCount} characters.";
         }
+
+        private void RichTextBxContent_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+            var selectedWeight = RichTxtBxContent.Selection.GetPropertyValue(Inline.FontWeightProperty);
+            BtnBold.IsChecked = (selectedWeight != DependencyProperty.UnsetValue) &&
+                                (selectedWeight.Equals(FontWeights.Bold));
+
+            var selectedStyle = RichTxtBxContent.Selection.GetPropertyValue(Inline.FontStyleProperty);
+            BtnItalic.IsChecked = (selectedStyle != DependencyProperty.UnsetValue) &&
+                                  (selectedWeight.Equals(FontStyles.Italic));
+
+            var selectedDecoration = RichTxtBxContent.Selection.GetPropertyValue(Inline.TextDecorationsProperty);
+            BtnUnderline.IsChecked = (selectedDecoration != DependencyProperty.UnsetValue) &&
+                                     (selectedDecoration.Equals(TextDecorations.Underline));
+
+        }
+        
+        private void BtnBold_Click(object sender, RoutedEventArgs e)
+        {
+            bool isButtonEnabled = ((ToggleButton) sender).IsChecked ?? false;
+            if (isButtonEnabled)
+            {
+                RichTxtBxContent.Selection.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Bold);
+            }
+            else
+            {
+                RichTxtBxContent.Selection.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Normal);
+            }
+         
+        }
+
+        private void BtnItalic_Click(object sender, RoutedEventArgs e)
+        {
+            bool isButtonEnabled = ((ToggleButton) sender).IsChecked ?? false;
+            if (isButtonEnabled)
+            {
+                RichTxtBxContent.Selection.ApplyPropertyValue(FontStyleProperty, FontStyles.Italic);
+            }
+            else
+            {
+                RichTxtBxContent.Selection.ApplyPropertyValue(FontStyleProperty, FontStyles.Normal);
+            }
+        }
+
+        private void BtnUnderline_Click(object sender, RoutedEventArgs e)
+        {
+            bool isButtonEnabled = ((ToggleButton) sender).IsChecked ?? false;
+            if (isButtonEnabled)
+            {
+                RichTxtBxContent.Selection.ApplyPropertyValue(Inline.TextDecorationsProperty, TextDecorations.Underline);
+            }
+            else
+            {
+                ((TextDecorationCollection) RichTxtBxContent.Selection.GetPropertyValue(Inline.TextDecorationsProperty)).TryRemove(TextDecorations.Underline, out TextDecorationCollection textDecorations);
+                RichTxtBxContent.Selection.ApplyPropertyValue(Inline.TextDecorationsProperty, textDecorations);
+            }
+        }
+
+     
     }
 }

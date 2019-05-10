@@ -52,19 +52,39 @@
         <ToolBarTray
             DockPanel.Dock="Top">
             <ToolBar>
-                <Button Content="Speech"
+                <ToggleButton Content="Speech"
                         x:Name="BtnSpeech"
                         Click="BtnSpeech_Click" />
-                <Button x:Name ="BtnBold"
-                        Click="BtnBold_Click">
+                <Separator />
+                <ToggleButton 
+                        x:Name ="BtnBold"
+                        Click="BtnBold_Click"
+                        Margin="5 0 0 0">
                     <TextBlock Text ="B"
                                FontWeight="Bold" />
-                </Button>
+                </ToggleButton>
+                <Separator />
+                <ToggleButton
+                     x:Name ="BtnItalic"
+                     Click="BtnItalic_Click"
+                     Margin="5 0 0 0">
+                    <TextBlock Text ="I"
+                               FontStyle="Italic" />
+                </ToggleButton>
+                <Separator />
+                <ToggleButton
+                        x:Name ="BtnUnderline"
+                        Click="BtnUnderline_Click"
+                        Margin="5 0 0 0">
+                    <TextBlock Text ="U"
+                               TextDecorations="Underline" />
+                </ToggleButton>
             </ToolBar>
         </ToolBarTray>
         <Grid>
             <RichTextBox x:Name="RichTxtBxContent"
-                         TextChanged="RichTxtBxContent_TextChanged" />
+                         TextChanged="RichTxtBxContent_TextChanged" 
+                         SelectionChanged="RichTextBxContent_SelectionChanged"/>
         </Grid>
     </DockPanel>
 </Window>
