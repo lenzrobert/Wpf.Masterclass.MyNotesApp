@@ -1,10 +1,12 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Speech.Recognition;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace Wpf.Masterclass.MyNotesApp.View
 {
@@ -14,11 +16,38 @@ namespace Wpf.Masterclass.MyNotesApp.View
     public partial class NotesWindow : Window
     {
         private SpeechRecognitionEngine _speechRecognizer;
+       
         
         public NotesWindow()
         {
             InitializeComponent();
             InitializeSpeechEngine();
+            InitializeFontFamilies();
+            InitializeFontSizes();
+
+        }
+
+        private void InitializeFontSizes()
+        {
+            CboxFontSize.ItemsSource = new List<double>()
+            {
+                8,
+                9,
+                10,
+                12,
+                14,
+                16,
+                20,
+                24,
+                28,
+                72
+            };
+            
+        }
+
+        private void InitializeFontFamilies()
+        {
+            CboxFontFamily.ItemsSource = Fonts.SystemFontFamilies.OrderBy(f => f.Source);
         }
 
         private void InitializeSpeechEngine()
@@ -82,6 +111,9 @@ namespace Wpf.Masterclass.MyNotesApp.View
             BtnUnderline.IsChecked = (selectedDecoration != DependencyProperty.UnsetValue) &&
                                      (selectedDecoration.Equals(TextDecorations.Underline));
 
+            CboxFontFamily.SelectedItem = RichTxtBxContent.Selection.GetPropertyValue(Inline.FontFamilyProperty);
+            CboxFontSize.Text = (RichTxtBxContent.Selection.GetPropertyValue(Inline.FontSizeProperty)).ToString();
+
         }
         
         private void BtnBold_Click(object sender, RoutedEventArgs e)
@@ -125,6 +157,21 @@ namespace Wpf.Masterclass.MyNotesApp.View
             }
         }
 
-     
+
+        private void CboxFontFamily_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CboxFontFamily.SelectedItem != null)
+            {
+                RichTxtBxContent.Selection.ApplyPropertyValue(Inline.FontFamilyProperty, CboxFontFamily.SelectedItem);
+            }
+        }
+
+        private void CboxFontSize_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (double.TryParse(CboxFontSize.Text, out double selectedValue))
+            {
+                RichTxtBxContent.Selection.ApplyPropertyValue(Inline.FontSizeProperty, selectedValue);
+            }
+        }
     }
 }

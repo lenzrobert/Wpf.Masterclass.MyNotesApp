@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="NotesWindow" Height="450" Width="800">
     <Window.Resources>
-        <vm:NotesViewModel x:Key="Vm" />
+        <vm:NotesViewModel x:Key="Vm"/>
     </Window.Resources>
     <DockPanel DataContext="{StaticResource Vm}">
         <Menu DockPanel.Dock="Top">
@@ -79,6 +79,13 @@
                     <TextBlock Text ="U"
                                TextDecorations="Underline" />
                 </ToggleButton>
+                <ComboBox x:Name="CboxFontFamily"
+                          Width="100"
+                          SelectionChanged="CboxFontFamily_SelectionChanged" />
+                <ComboBox x:Name="CboxFontSize"
+                          Width="50"
+                          IsEditable="True"
+                          TextBoxBase.TextChanged="CboxFontSize_TextChanged" />
             </ToolBar>
         </ToolBarTray>
         <Grid>
