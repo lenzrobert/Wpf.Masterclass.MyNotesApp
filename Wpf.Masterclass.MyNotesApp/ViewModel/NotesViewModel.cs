@@ -24,7 +24,7 @@ namespace Wpf.Masterclass.MyNotesApp.ViewModel
             set
             {
                 _selectedNotebook = value;
-                //TODO: get notes implementation
+                ReadNotes();
             }
         }
 
@@ -64,6 +64,7 @@ namespace Wpf.Masterclass.MyNotesApp.ViewModel
             Notebooks = new ObservableCollection<Notebook>();
 
             ReadNotebooks();
+            ReadNotes();
         }
 
         private void ExitApplication(object obj)

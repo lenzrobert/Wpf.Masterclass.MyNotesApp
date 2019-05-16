@@ -28,8 +28,7 @@ namespace Wpf.Masterclass.MyNotesApp.ViewModel.Commands
         public void Execute(object parameter)
         {
             Notebook selectedNotebook = parameter as Notebook;
-            Debug.Assert(selectedNotebook != null, nameof(selectedNotebook) + " != null");
-            NotesViewModel?.CreateNote(selectedNotebook.Id);
+           NotesViewModel.CreateNote(selectedNotebook.Id);
         }
 
         public event EventHandler CanExecuteChanged;
