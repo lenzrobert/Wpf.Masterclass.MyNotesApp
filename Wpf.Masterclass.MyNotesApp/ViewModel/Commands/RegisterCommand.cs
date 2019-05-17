@@ -20,7 +20,7 @@ namespace Wpf.Masterclass.MyNotesApp.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-            throw new NotImplementedException();
+           LoginViewModel.Register();
         }
 
         public event EventHandler CanExecuteChanged;

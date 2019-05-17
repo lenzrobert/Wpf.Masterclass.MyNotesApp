@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Speech.Recognition;
 using System.Threading;
@@ -25,6 +26,16 @@ namespace Wpf.Masterclass.MyNotesApp.View
             InitializeFontFamilies();
             InitializeFontSizes();
 
+        }
+
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+            if (string.IsNullOrEmpty(App.UserId))
+            {
+                LoginWindow loginWindow = new LoginWindow();
+                loginWindow.ShowDialog();
+            }
         }
 
         private void InitializeFontSizes()

@@ -21,7 +21,7 @@ namespace Wpf.Masterclass.MyNotesApp.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-            //TODO: Login functionality
+            LoginViewModel.Login();
         }
     }
 }

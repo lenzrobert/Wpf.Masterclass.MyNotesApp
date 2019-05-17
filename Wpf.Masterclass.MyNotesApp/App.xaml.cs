@@ -13,5 +13,6 @@ namespace Wpf.Masterclass.MyNotesApp
     /// </summary>
     public partial class App : Application
     {
+        public static string UserId = null;
     }
 }

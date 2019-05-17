@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Wpf.Masterclass.MyNotesApp.ViewModel;
 
 namespace Wpf.Masterclass.MyNotesApp.View
 {
@@ -22,6 +23,27 @@ namespace Wpf.Masterclass.MyNotesApp.View
         public LoginWindow()
         {
             InitializeComponent();
+            LoginViewModel vm = new LoginViewModel();
+            GridContainer.DataContext = vm;
+           
+            vm.HasLoggedIn += Vm_HasLoggedIn;
+        }
+
+        private void Vm_HasLoggedIn(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void BtnNoAccount_Click(object sender, RoutedEventArgs e)
+        {
+            StackPanelRegister.Visibility = Visibility.Visible;
+            StackPanelLogin.Visibility = Visibility.Collapsed;
+        }
+
+        private void BtnHasAccount_Click(object sender, RoutedEventArgs e)
+        {
+            StackPanelRegister.Visibility = Visibility.Collapsed;
+            StackPanelLogin.Visibility = Visibility.Visible;
         }
     }
 }
