@@ -1,16 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using SQLite;
+using Wpf.Masterclass.MyNotesApp.Annotations;
 using Wpf.Masterclass.MyNotesApp.Model;
 using Wpf.Masterclass.MyNotesApp.ViewModel.Commands;
 
 namespace Wpf.Masterclass.MyNotesApp.ViewModel
 {
-    public class NotesViewModel
+    public class NotesViewModel : INotifyPropertyChanged
     {
+        private bool _isEditing;
+        public bool IsEditing
+        {
+            get => _isEditing;
+            set
+            {
+                _isEditing = value;
+                OnPropertyChanged(nameof(IsEditing));
+            }
+        }
+
+
         public ObservableCollection<Notebook> Notebooks { get; set; }
         public ObservableCollection<Note> Notes { get; set; }
         public NewNoteCommand NewNoteCommand { get; set; }
@@ -52,19 +67,48 @@ namespace Wpf.Masterclass.MyNotesApp.ViewModel
             get => _exitApplicationCommand;
             set => _exitApplicationCommand = value;
         }
-        #endregion
+
+        private ICommand _beginEditCommand;
+
+        public ICommand BeginEditCommand
+        {
+            get => _beginEditCommand;
+            set => _beginEditCommand = value;
+        }
+
+        private ICommand _hasRenamedCommand;
+      
+
+        public ICommand HasRenamedCommand
+        {
+            get => _hasRenamedCommand;
+            set => _hasRenamedCommand = value;
+        }
+       #endregion
+
+       public event PropertyChangedEventHandler PropertyChanged;
+
+       [NotifyPropertyChangedInvocator]
+       protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+       {
+           PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+       }
 
         public NotesViewModel()
         {
            _exitApplicationCommand = new RelayCommand(ExitApplication, param => _canExecute);
-            NewNoteCommand = new NewNoteCommand(this);
-            NewNotebookCommand = new NewNotebookCommand(this);
+           _beginEditCommand= new RelayCommand(StartEditing, param => _canExecute);
+           _hasRenamedCommand = new RelayCommand(HasRenamed, param => _canExecute);
+           NewNoteCommand = new NewNoteCommand(this);
+           NewNotebookCommand = new NewNotebookCommand(this);
 
-            Notes = new ObservableCollection<Note>();
-            Notebooks = new ObservableCollection<Notebook>();
+           Notes = new ObservableCollection<Note>();
+           Notebooks = new ObservableCollection<Notebook>();
 
-            ReadNotebooks();
-            ReadNotes();
+           IsEditing = false;
+
+           ReadNotebooks(); 
+           ReadNotes();
         }
 
         private void ExitApplication(object obj)
@@ -136,5 +180,24 @@ namespace Wpf.Masterclass.MyNotesApp.ViewModel
                
             }
         }
+
+        public void StartEditing(object obj)
+        {
+            IsEditing = true;
+        }
+
+        public void HasRenamed(object obj)
+        {
+            Notebook notebook = (Notebook) obj;
+            
+            if (notebook != null)
+            {
+                DatabaseHelper.Update(notebook);
+                IsEditing = false;
+                ReadNotebooks();
+            }
+        }
+
+       
     }
 }
